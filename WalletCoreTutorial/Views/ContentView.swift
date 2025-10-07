@@ -26,28 +26,10 @@ struct ContentView: View {
                 Divider().padding(.vertical, 10)
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Ethereum Address")
-                        .font(.headline)
-                    Text(viewModel.addressETH)
-                        .font(.footnote)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
-
-                    Text("Bitcoin Address")
-                        .font(.headline)
-                    Text(viewModel.addressBTC)
-                        .font(.footnote)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
-                    Text("BNB Address")
-                        .font(.headline)
-                    Text(viewModel.addressBNB)
-                        .font(.footnote)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
+                    AddressView(title: "mnemonic", content: viewModel.mnemonic)
+                    AddressView(title: "Ethereum Address", content: viewModel.addressETH)
+                    AddressView(title: "Bitcoin Address", content: viewModel.addressBTC)
+                    AddressView(title: "BNB Address", content: viewModel.addressBNB)
                 }
                 .padding(.horizontal)
             }
