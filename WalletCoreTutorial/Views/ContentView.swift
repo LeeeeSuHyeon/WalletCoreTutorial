@@ -20,12 +20,12 @@ struct ContentView: View {
 
                 HStack {
                     Button("Create New Wallet") {
-                        viewModel.createWallet()
+                        viewModel.perform(.createWallet)
                     }
                     .buttonStyle(.borderedProminent)
 
                     Button("Show Private Keys") {
-                        viewModel.showPrivateKeys()
+                        viewModel.perform(.showPrivateKeys)
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.orange)
@@ -33,7 +33,10 @@ struct ContentView: View {
 
                 Divider().padding(.vertical, 10)
 
-                HStack {
+                switch viewModel.state {
+                case .none:
+                    EmptyView()
+                case .created:
                     VStack(alignment: .leading, spacing: 8) {
                         AddressView(title: "mnemonic", content: viewModel.mnemonic)
                         AddressView(title: "Ethereum Address", content: viewModel.addressETH)
@@ -41,20 +44,19 @@ struct ContentView: View {
                         AddressView(title: "BNB Address", content: viewModel.addressBNB)
                     }
                     .padding(.horizontal)
-
+                case .showingPrivateKeys:
                     VStack(alignment: .leading, spacing: 8) {
                         AddressView(title: "BTC Private Key", content: viewModel.privateKeyBTC)
                         AddressView(title: "ETH Private Key", content: viewModel.privateKeyETH)
                         AddressView(title: "BNB Private Key", content: viewModel.privateKeyBNB)
                     }
                 }
-
+                Spacer()
             }
-
-            Spacer()
         }
         .padding()
         .navigationTitle("Wallet Core")
+
     }
 }
 

@@ -11,6 +11,19 @@ import Combine
 
 @MainActor
 final class WalletViewModel: ObservableObject {
+    enum WalletAction {
+        case createWallet
+        case showPrivateKeys
+    }
+
+    enum WalletState {
+        case none
+        case created
+        case showingPrivateKeys
+    }
+
+    @Published var state: WalletState = .none
+
     private var wallet: HDWallet?
 
     @Published var mnemonic: String = ""
@@ -22,8 +35,18 @@ final class WalletViewModel: ObservableObject {
     @Published var privateKeyETH: String = ""
     @Published var privateKeyBNB: String = ""
 
+    func perform(_ action: WalletAction) {
+        switch action {
+        case .createWallet:
+            createWallet()
+            state = .created
+        case .showPrivateKeys:
+            showPrivateKeys()
+            state = .showingPrivateKeys
+        }
+    }
 
-    func createWallet() {
+    private func createWallet() {
         /*
          HDWallet: Hierarchical Deterministic Wallet
             - 하나의 “마스터 키(seed)“로부터 여러 개의
@@ -54,7 +77,7 @@ final class WalletViewModel: ObservableObject {
     }
 
     // 코인별 비밀키 출력
-    func showPrivateKeys() {
+    private func showPrivateKeys() {
         guard let wallet else { return }
         
         // 코인별 프라이빗 키 추출 (파생 경로에서 개인키 추출)
