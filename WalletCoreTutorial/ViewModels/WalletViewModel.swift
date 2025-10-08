@@ -11,10 +11,17 @@ import Combine
 
 @MainActor
 final class WalletViewModel: ObservableObject {
+    private var wallet: HDWallet?
+
     @Published var mnemonic: String = ""
     @Published var addressBTC: String = ""
     @Published var addressETH: String = ""
     @Published var addressBNB: String = ""
+
+    @Published var privateKeyBTC: String = ""
+    @Published var privateKeyETH: String = ""
+    @Published var privateKeyBNB: String = ""
+
 
     func createWallet() {
         /*
@@ -28,9 +35,10 @@ final class WalletViewModel: ObservableObject {
             - 탈취자가 니모닉을 알아도, passphrase 없으면 접근 불가
          */
 
-        
+
         // 새로운 니모닉(12단어) 생성
-        let wallet = HDWallet(strength: 128, passphrase: "")! // 지갑 생성
+        wallet = HDWallet(strength: 128, passphrase: "")! // 지갑 생성
+        guard let wallet else { return }
 //        let wallet = HDWallet(mnemonic: "ripple scissors kick mammal hire column oak again sun offer wealth tomorrow wagon turn fatal", passphrase: "")! // 지갑 복구
 
         // 니모닉 단어 확인
@@ -43,6 +51,20 @@ final class WalletViewModel: ObservableObject {
         self.addressBTC = addressBTC
         self.addressETH = addressETH
         self.addressBNB = addressBNB
+    }
 
+    // 코인별 비밀키 출력
+    func showPrivateKeys() {
+        guard let wallet else { return }
+        
+        // 코인별 프라이빗 키 추출 (파생 경로에서 개인키 추출)
+        let btcKey = wallet.getKeyForCoin(coin: .bitcoin)
+        let ethKey = wallet.getKeyForCoin(coin: .ethereum)
+        let bnbKey = wallet.getKeyForCoin(coin: .binance)
+
+        // Hex 출력
+        self.privateKeyBTC = btcKey.data.hexString
+        self.privateKeyETH = ethKey.data.hexString
+        self.privateKeyBNB = bnbKey.data.hexString
     }
 }
