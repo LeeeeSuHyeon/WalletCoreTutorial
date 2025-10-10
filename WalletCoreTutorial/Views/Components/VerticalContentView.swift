@@ -1,5 +1,5 @@
 //
-//  AddressView.swift
+//  VerticalContentView.swift
 //  WalletCoreTutorial
 //
 //  Created by 이수현 on 10/7/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddressView: View {
+struct VerticalContentView: View {
     private let title: String
     private let content: String
 

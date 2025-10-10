@@ -42,17 +42,17 @@ struct WalletPracticeView: View {
                     EmptyView()
                 case .created:
                     VStack(alignment: .leading, spacing: 8) {
-                        AddressView(title: "mnemonic", content: viewModel.mnemonic)
-                        AddressView(title: "Ethereum Address", content: viewModel.addressETH)
-                        AddressView(title: "Bitcoin Address", content: viewModel.addressBTC)
-                        AddressView(title: "BNB Address", content: viewModel.addressBNB)
+                        VerticalContentView(title: "mnemonic", content: viewModel.mnemonic)
+                        VerticalContentView(title: "Ethereum Address", content: viewModel.addressETH)
+                        VerticalContentView(title: "Bitcoin Address", content: viewModel.addressBTC)
+                        VerticalContentView(title: "BNB Address", content: viewModel.addressBNB)
                     }
                     .padding(.horizontal)
                 case .showingPrivateKeys:
                     VStack(alignment: .leading, spacing: 8) {
-                        AddressView(title: "BTC Private Key", content: viewModel.privateKeyBTC)
-                        AddressView(title: "ETH Private Key", content: viewModel.privateKeyETH)
-                        AddressView(title: "BNB Private Key", content: viewModel.privateKeyBNB)
+                        VerticalContentView(title: "BTC Private Key", content: viewModel.privateKeyBTC)
+                        VerticalContentView(title: "ETH Private Key", content: viewModel.privateKeyETH)
+                        VerticalContentView(title: "BNB Private Key", content: viewModel.privateKeyBNB)
                     }
                 }
                 Spacer()
