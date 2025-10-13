@@ -40,16 +40,6 @@
 			path = WalletCoreTutorial;
 			sourceTree = "<group>";
 		};
-		CBDC5BEA2E91165C008DC1E1 /* WalletCoreTutorialTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = WalletCoreTutorialTests;
-			sourceTree = "<group>";
-		};
-		CBDC5BF42E91165C008DC1E1 /* WalletCoreTutorialUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = WalletCoreTutorialUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +73,6 @@
 			isa = PBXGroup;
 			children = (
 				CBDC5BDC2E91165B008DC1E1 /* WalletCoreTutorial */,
-				CBDC5BEA2E91165C008DC1E1 /* WalletCoreTutorialTests */,
-				CBDC5BF42E91165C008DC1E1 /* WalletCoreTutorialUITests */,
 				CBDC5BDB2E91165B008DC1E1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -139,9 +127,6 @@
 			dependencies = (
 				CBDC5BE92E91165C008DC1E1 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				CBDC5BEA2E91165C008DC1E1 /* WalletCoreTutorialTests */,
-			);
 			name = WalletCoreTutorialTests;
 			packageProductDependencies = (
 			);
@@ -161,9 +146,6 @@
 			);
 			dependencies = (
 				CBDC5BF32E91165C008DC1E1 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				CBDC5BF42E91165C008DC1E1 /* WalletCoreTutorialUITests */,
 			);
 			name = WalletCoreTutorialUITests;
 			packageProductDependencies = (
