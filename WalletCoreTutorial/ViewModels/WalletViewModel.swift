@@ -15,6 +15,7 @@ final class WalletViewModel: ObservableObject {
     enum WalletAction {
         case createWallet
         case showPrivateKeys
+        case showAddressWithDerivationPath
         case signEthereumTransaction
     }
 
@@ -47,6 +48,8 @@ final class WalletViewModel: ObservableObject {
             state = .showingPrivateKeys
         case .signEthereumTransaction:
             signEthereumTransaction()
+        case .showAddressWithDerivationPath:
+            showAddressWithDerivationPath()
         }
     }
 
@@ -89,10 +92,32 @@ final class WalletViewModel: ObservableObject {
         let ethKey = wallet.getKeyForCoin(coin: .ethereum)
         let bnbKey = wallet.getKeyForCoin(coin: .binance)
 
+        // 개인키에서 공개키 추출
+        let btcPubKey = btcKey.getPublicKey(coinType: .bitcoin)
+        let ethPubKey = ethKey.getPublicKey(coinType: .ethereum)
+        let bnbPubKey = bnbKey.getPublicKey(coinType: .binance)
+
         // Hex 출력
         self.privateKeyBTC = btcKey.data.hexString
         self.privateKeyETH = ethKey.data.hexString
         self.privateKeyBNB = bnbKey.data.hexString
+    }
+
+    // 경로 체계로 키, 주소 생성
+    func showAddressWithDerivationPath() {
+        guard let wallet else { return }
+        let path = "m/44'/0'/0'/0/0"
+
+        // 비밀키를 입력으로 주소 얻기
+        let privateKey = wallet.getKey(coin: .bitcoin, derivationPath: path)
+        let addressA = CoinType.bitcoin.deriveAddress(privateKey: privateKey)
+
+        // 공개키로 주소 얻기 - 보기 전용 지갑(서명 불가)
+        let publicKey = privateKey.getPublicKey(coinType: .bitcoin)
+        let addressB = CoinType.bitcoin.deriveAddressFromPublicKey(publicKey: publicKey)
+
+        print("addressA: \(addressA)")
+        print("addressB: \(addressB)")
     }
 
     // 이더리움 트랜잭션 서명
