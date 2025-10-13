@@ -12,6 +12,7 @@ import SwiftProtobuf
 
 final class BitcoinTransactionViewModel: ObservableObject {
     @Published var pubkeyUTXOOutput: String = ""
+    @Published var P2SH_P2WPKHOutput: String = ""
 
     // UTXO(미사용 출력)를 직접 지정해서 Input + Output 구성
     func signExtendedPubkeyUTXO() {
@@ -67,5 +68,48 @@ final class BitcoinTransactionViewModel: ObservableObject {
 
         let ouput: BitcoinSigningOutput = AnySigner.sign(input: input, coin: .bitcoin) // 서명 및 트랜잭션 생성
         pubkeyUTXOOutput = ouput.encoded.hexString
+    }
+
+    // P2SH-P2WPKH(Nested SegWit) 구조에서 트랜잭션 서명 메서드
+    func signP2SH_P2WPKH() {
+        let address = "3LGoLac9mtCwDy2q8PYyvwL8kMyrCWCYQW" // P2SH 주소(3으로 시작)
+        let lockScript = BitcoinScript.lockScriptForAddress(address: address, coin: .bitcoin) // 잠금 스크립트 생성
+        let key = PrivateKey(data: Data(hexString: "e240ef3419d038577e48426c8c37c3c13bec1a0ed3f5270b82e7377bc48699dd")!)! // 개인키 생성
+        let pubKey = key.getPublicKeySecp256k1(compressed: true) // 세그윗 기반은 압축 공개키 사용
+        let utxos = [
+            BitcoinUnspentTransaction.with {
+                $0.outPoint.hash = Data.reverse(hexString: "8b5f4861c6d4a4ea361aa4066d720067f73854d9a1b1d01e2b0e3c9e150bc5a3")
+                $0.outPoint.index = 0
+                $0.outPoint.sequence = UINT32_MAX
+                $0.script = lockScript.data
+                $0.amount = 54700
+            }
+        ]
+
+        // 트랜잭션 서명 전 금액, 수수료 계산을 명확히 하기 위한 구조체
+        let plan = BitcoinTransactionPlan.with {
+            $0.amount = 43980 // 송금할 금액
+            $0.fee = 10720    // 수수료
+            $0.change = 0     // 잔돈
+            $0.utxos = utxos  // 어떤 UTXO를 사용할지
+        }
+
+        let scriptHash = lockScript.matchPayToScriptHash()! // P2SH
+        let input = BitcoinSigningInput.with {
+            $0.amount = 43980
+            $0.toAddress = "3NqULUrjZ7NL36YtBGsSVzqr5q1x9CJWwu"
+            $0.hashType = BitcoinScript.hashTypeForCoin(coinType: .bitcoin)
+            $0.coinType = CoinType.bitcoin.rawValue
+            $0.scripts = [
+                // 실제 세그윗 스크립트를 참조한다는 것을 명시
+                scriptHash.hexString: BitcoinScript.buildPayToWitnessPubkeyHash(hash: pubKey.bitcoinKeyHash).data
+            ]
+            $0.privateKey = [key.data]
+            $0.plan = plan
+        }
+
+        let output: BitcoinSigningOutput = AnySigner.sign(input: input, coin: .bitcoin)
+
+        self.P2SH_P2WPKHOutput = output.encoded.hexString
     }
 }

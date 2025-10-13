@@ -12,11 +12,23 @@ struct BitcoinTransactionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Button("execute SignExtendedPubkeyUTXO") {
-                viewModel.signExtendedPubkeyUTXO()
+            HStack {
+                Button("SignExtendedPubkeyUTXO") {
+                    viewModel.signExtendedPubkeyUTXO()
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button("SignP2SH_P2WPKH") {
+                    viewModel.signP2SH_P2WPKH	()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.orange)
             }
-            .buttonStyle(.borderedProminent)
-            VerticalContentView(title: "Output", content: viewModel.pubkeyUTXOOutput)
+
+            Divider()
+
+            VerticalContentView(title: "ExtendedPubkey - Output", content: viewModel.pubkeyUTXOOutput)
+            VerticalContentView(title: "P2SH_P2WPKH - Output", content: viewModel.P2SH_P2WPKHOutput)
 
         }
         .padding(.horizontal)
