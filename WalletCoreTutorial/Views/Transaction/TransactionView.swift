@@ -26,8 +26,7 @@ struct TransactionView: View {
             if selectedNetwork == "Bitcoin" {
                 BitcoinTransactionView()
             } else {
-                Text("Ethereum")
-//                EthereumTransactionView()
+                EthereumTransactionView()
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)

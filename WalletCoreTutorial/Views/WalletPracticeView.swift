@@ -27,12 +27,6 @@ struct WalletPracticeView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.orange)
-
-                    Button("Sign ETH Transaction") {
-                        viewModel.perform(.signEthereumTransaction)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.green)
                 }
 
                 Divider().padding(.vertical, 10)
