@@ -68,6 +68,8 @@ final class BitcoinTransactionViewModel: ObservableObject {
 
         let ouput: BitcoinSigningOutput = AnySigner.sign(input: input, coin: .bitcoin) // 서명 및 트랜잭션 생성
         pubkeyUTXOOutput = ouput.encoded.hexString
+
+        print(pubkeyUTXOOutput)
     }
 
     // P2SH-P2WPKH(Nested SegWit) 구조에서 트랜잭션 서명 메서드

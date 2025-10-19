@@ -54,3 +54,4 @@ final class EthereumTransactionViewModel: ObservableObject {
         self.transactionOutput = output.encoded.hexString
     }
 }
+
