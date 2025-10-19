@@ -17,6 +17,9 @@ struct ContentView: View {
             Tab("Transaction", systemImage: "envelope.fill") {
                 TransactionView()
             }
+            Tab("Bitcoin Testnet", systemImage: "bitcoinsign.circle.fill") {
+                BitcoinTestnetView()
+            }
         }
     }
 }
